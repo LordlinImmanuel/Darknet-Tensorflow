@@ -39,7 +39,7 @@ def get_weights():
           
           'conv_6_1':tf.Variable(tf.random_normal([1,1,1024,1000],stddev=0.1)),
         
-          'fc':tf.Variable(tf.random_normal([1000,1000],stddev=0.1),),
+          'fc':tf.Variable(tf.random_normal([1000,10],stddev=0.1),),
     }
 
 def model_graph(x,weights):
@@ -106,4 +106,13 @@ def train():
             end=end+BATCH_SIZE
           print("Epoch "+str(i))
           print('Training Accuracy:',epoch_accuracy/int(len(x_train)/BATCH_SIZE))
-          print('Testing Accuracy:',accuracy.eval({Image:x_test, labels:y_test}))
+          start=0
+          end=BATCH_SIZE
+          epoch_accuracy=0
+          for j in range(int(len(x_test)/BATCH_SIZE)):
+            epoch_x= x_test[start:end]
+            epoch_y= y_test[start:end]
+            epoch_accuracy+=accuracy.eval({Image:epoch_x, labels:epoch_y})
+            start=end+1
+            end=end+BATCH_SIZE
+          print('Testing Accuracy:',epoch_accuracy/int(len(x_test)/BATCH_SIZE))
