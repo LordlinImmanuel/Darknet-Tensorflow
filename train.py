@@ -42,6 +42,8 @@ def get_weights():
           'fc':tf.Variable(tf.random_normal([1000,10],stddev=0.1),),
     }
 
+    return weights
+
 def model_graph(x,weights):
     x=conv(x,weights['conv_0_1'])
     x=tf.nn.max_pool2d(x,ksize=[1, 2, 2, 1], strides=[1, 1, 1, 1],padding="VALID")
